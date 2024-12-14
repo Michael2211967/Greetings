@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import datum
 import tkinter as tk
