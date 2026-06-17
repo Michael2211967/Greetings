@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+ # Datum.py
+ # Datum gibt das aktuelle Datum und die Zeit
+ # in deutschem Format aus
+
+from collections import namedtuple
+import sys
+import os
+import time
+
+greets = namedtuple('greets', ['greeting', 'weekday', 'day', 'month', 'year', 'hour', 'minute', 'second'])
+
+def datetime():
+    month = ["Januar", "Februar", "März", "April", "Mai", "Juni",\
+          "Juli", "August", "September", "Oktober", "November", "Dezember"]
+    wtage = ["Montag", "Dienstag", "Mittwoch",\
+          "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+
+    try:
+        s = sys.winver
+        user = os.environ["USERNAME"]
+    except:
+        user = os.environ["USER"].capitalize()
+
+    lt = time.localtime()                                #   Variablenstruktur für
+                                                         #         die Zeit
+                                                         #          Zeit
+                                                         #     wird geholt
+    week = lt.tm_wday                                    #  Wochentag als Zahl
+    day = lt.tm_mday                                     #        Datum
+    month_int = lt.tm_mon                                #   Monat als Zahl
+    year = lt.tm_year                                    #        Jahr
+    hour = lt.tm_hour                                    #   aktuelle Stunde
+    minute = lt.tm_min                                   #   aktuelle Minute
+    second = lt.tm_sec                                   #   aktuelle Sekunde
+
+    #hour = 9
+    #month_int = 12
+    #day = 24
+
+    #              Zeit wird ausgewertet und die Begrüßung gesetzt:
+    if 0 <= hour <= 3:
+        Begr = f"Hi {user}, so spät noch aktiv ???"
+    elif 3 < hour <= 6:
+        Begr = f"So früh am Computer, {user}? Geh' lieber ins Bett"
+    elif 6 < hour <= 8:
+        Begr = f"Guten Morgen {user}! Schon so früh auf?"
+    elif 8 < hour <= 11:
+        Begr = f"Guten Morgen {user}"
+    elif 11 < hour <= 18:
+        Begr = f"Guten Tag {user}"
+    else:
+        Begr = f"Guten Abend {user}"
+    if month_int == 12 and day == 24:
+        Begr += f"\nFrohe Weihnachten {user}!"
+    if month_int == 12 and day == 31:
+        Begr += "\nIch wünsche eine feuchtfröhliche Silvester-Party!"
+    return greets(Begr, wtage[week], day, month[month_int-1], year, hour, minute, second)
+#      Begrüßung, Datum und Uhrzeit werden auf Standardgerät ausgegeben:
+
+if __name__ == "__main__":
+    date = datetime()
+    print(f"\n{date.greeting}")
+    print(f"\nHeute ist {date.weekday}, der {date.day}. {date.month} {date.year}. Es ist {date.hour:02d}:{date.minute:02d}:{date.second:02d} Uhr\n")
